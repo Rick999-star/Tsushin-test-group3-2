@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3章 3-10 半導体 - 第1回テスト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .option-label.correct { background-color: #d1fae5; }
+        .option-label.incorrect { background-color: #fee2e2; }
+        .explanation { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">3章 3-10 半導体</h1>
+            <h2 class="text-xl md:text-2xl text-green-600">第1回テスト (20問)</h2>
+        </header>
+
+        <div id="quiz-container" class="space-y-6">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <div class="mt-10 text-center">
+            <button id="submit-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg">採点する</button>
+            <div id="result" class="mt-6 text-2xl font-bold"></div>
+             <a href="index.html" class="inline-block mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">
+                トップに戻る
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "真性半導体に3価の不純物を添加して作られる半導体は何か。",
+                options: ["N形半導体", "P形半導体", "化合物半導体", "真性半導体"],
+                answer: 1,
+                explanation: "3価の不純物（アクセプタ）を添加すると、電子が不足した正孔（ホール）が多数キャリアとなるP形半導体が生成されます。"
+            },
+            {
+                question: "N形半導体において、多数キャリアとして機能するものは何か。",
+                options: ["正孔（ホール）", "陽子", "自由電子", "中性子"],
+                answer: 2,
+                explanation: "N形半導体は5価の不純物（ドナー）を添加して作られ、余剰の電子が自由電子として多数キャリアとなります。"
+            },
+            {
+                question: "PN接合ダイオードに順方向電圧をかけた場合、空乏層はどうなるか。",
+                options: ["広がる", "狭くなる", "変化しない", "消滅する"],
+                answer: 1,
+                explanation: "順方向電圧をかけると、多数キャリアが接合部に向かって移動し、キャリアが存在しない領域である空乏層は狭くなります。"
+            },
+            {
+                question: "光エネルギーを電気エネルギーに変換する半導体素子は何か。",
+                options: ["発光ダイオード (LED)", "定電圧ダイオード", "ホトダイオード", "可変容量ダイオード"],
+                answer: 2,
+                explanation: "ホトダイオードは、PN接合部に光が当たると光電効果により電流が流れる性質を利用し、光信号を電気信号に変換します。"
+            },
+            {
+                question: "PN接合に逆方向電圧を印加し、ある電圧以上で急激に電流が流れる現象を利用したダイオードは何か。",
+                options: ["ショットキーバリアダイオード", "ツェナーダイオード（定電圧ダイオード）", "ガンダイオード", "トンネルダイオード"],
+                answer: 1,
+                explanation: "ツェナーダイオードは、逆方向の降伏現象を利用して、端子間の電圧を一定に保つ働きをします。"
+            },
+            {
+                question: "バイポーラトランジスタを構成する3つの端子は何か。",
+                options: ["ソース、ドレイン、ゲート", "アノード、カソード、ゲート", "エミッタ、ベース、コレクタ", "入力、出力、接地"],
+                answer: 2,
+                explanation: "バイポーラトランジスタは、エミッタ、ベース、コレクタの3つの端子を持ち、ベース電流によってコレクタ電流を制御します。"
+            },
+            {
+                question: "電界効果トランジスタ(FET)の動作を制御するために電圧を印加する端子はどれか。",
+                options: ["ソース", "ドレイン", "ゲート", "コレクタ"],
+                answer: 2,
+                explanation: "FETはゲートに電圧を印加することで、ソースとドレインの間に流れる電流を制御します。電圧駆動型の素子です。"
+            },
+            {
+                question: "半導体の電気抵抗は温度が上がるとどうなるか。",
+                options: ["高くなる", "低くなる", "変わらない", "ゼロになる"],
+                answer: 1,
+                explanation: "半導体は温度が上がると、熱エネルギーによって電子と正孔のペアが生成され、キャリア濃度が増加するため電気抵抗は低くなります。"
+            },
+            {
+                question: "5価の不純物（リンP、ヒ素Asなど）の別名は何か。",
+                options: ["アクセプタ", "ドナー", "キャリア", "フェルミ"],
+                answer: 1,
+                explanation: "5価の不純物は、真性半導体に自由電子を供給（donete）するため、「ドナー」と呼ばれます。"
+            },
+            {
+                question: "電流を一方向にしか流さないダイオードの特性を何というか。",
+                options: ["増幅作用", "整流作用", "発振作用", "スイッチング作用"],
+                answer: 1,
+                explanation: "ダイオードが交流を直流に変換するように、電流を一方向にのみ流す性質を整流作用といいます。"
+            },
+            {
+                question: "P形半導体とN形半導体を接合した境界面付近にできる、キャリアが存在しない層を何と呼ぶか。",
+                options: ["反転層", "チャネル", "空乏層", "絶縁層"],
+                answer: 2,
+                explanation: "接合部では、電子と正孔が再結合して消滅するため、キャリアがほとんど存在しない「空乏層」が形成されます。"
+            },
+            {
+                question: "逆方向電圧の大きさによって静電容量が変化するダイオードはどれか。",
+                options: ["発光ダイオード", "定電圧ダイオード", "ショットキーバリアダイオード", "可変容量ダイオード（バラクタ）"],
+                answer: 3,
+                explanation: "可変容量ダイオードは、逆方向電圧を変化させることで空乏層の厚みが変わり、静電容量が変化する特性を利用します。"
+            },
+             {
+                question: "バイポーラトランジスタの主な機能は何か。",
+                options: ["電流の整流と電圧の安定化", "電流の増幅とスイッチング", "光の発生と検出", "周波数の発振と変調"],
+                answer: 1,
+                explanation: "バイポーラトランジスタは、小さなベース電流で大きなコレクタ電流を制御することにより、信号を増幅したり、電流のON/OFFを切り替えるスイッチとして機能します。"
+            },
+            {
+                question: "ゲート電圧が0Vでもドレイン電流が流れるタイプのMOSFETは何か。",
+                options: ["エンハンスメント型", "デプレッション型", "Nチャネル型", "Pチャネル型"],
+                answer: 1,
+                explanation: "デプレッション型MOSFETは、ゲート電圧が0Vの状態でもドレイン・ソース間にチャネルが既に形成されており、電流が流れます。ノーマリーオン特性とも言います。"
+            },
+            {
+                question: "マイクロ波の発振に用いられ、負性抵抗特性を持つダイオードはどれか。",
+                options: ["ツェナーダイオード", "ガンダイオード", "PINダイオード", "フォトダイオード"],
+                answer: 1,
+                explanation: "ガンダイオードはガン効果による負性抵抗特性を利用して、マイクロ波帯の発振器として用いられます。"
+            },
+            {
+                question: "純粋なシリコン（Si）やゲルマニウム（Ge）の結晶を何と呼ぶか。",
+                options: ["N形半導体", "P形半導体", "真性半導体", "化合物半導体"],
+                answer: 2,
+                explanation: "不純物を全く含まない、純粋な半導体材料の単結晶を真性半導体と呼びます。"
+            },
+            {
+                question: "P形半導体で電流を運ぶ主役となるキャリアは何か。",
+                options: ["自由電子", "正孔（ホール）", "イオン", "光子"],
+                answer: 1,
+                explanation: "P形半導体では、3価の不純物を添加することで正孔が生成され、これが多数キャリアとして電流を担います。"
+            },
+            {
+                question: "LEDが発光するのはどのような状態の時か。",
+                options: ["逆方向電圧をかけた時", "順方向電圧をかけた時", "電圧をかけていない時", "光を当てた時"],
+                answer: 1,
+                explanation: "LED（発光ダイオード）は、PN接合に順方向電圧をかけることで電子と正孔が再結合し、そのエネルギーが光として放出されることで発光します。"
+            },
+            {
+                question: "トランジスタの種類で、バイポーラ型ではないものはどれか。",
+                options: ["NPNトランジスタ", "PNPトランジスタ", "電界効果トランジスタ (FET)", "IGBT"],
+                answer: 2,
+                explanation: "電界効果トランジスタ(FET)は、電子または正孔のどちらか一方のキャリアのみを利用するため、ユニポーラ型に分類されます。バイポーラトランジスタは電子と正孔の両方を利用します。"
+            },
+            {
+                question: "3価の不純物（ホウ素B、ガリウムGaなど）の別名は何か。",
+                options: ["ドナー", "アクセプタ", "キャリア", "クエンチャ"],
+                answer: 1,
+                explanation: "3価の不純物は、周囲のシリコン原子から電子を受け入れる（accept）ことで正孔を生成するため、「アクセプタ」と呼ばれます。"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result');
+
+        quizData.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'bg-white p-5 rounded-lg shadow-sm';
+            questionDiv.innerHTML = `
+                <p class="text-md font-semibold mb-3">問題 ${index + 1}: ${q.question}</p>
+                <div class="options space-y-2" data-qindex="${index}">
+                    ${q.options.map((option, i) => `
+                        <label class="option-label block p-3 rounded-md border border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <input type="radio" name="q${index}" value="${i}" class="mr-3">
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+                <div id="explanation-${index}" class="explanation mt-3 p-3 rounded-md bg-blue-50 border-l-4 border-blue-400">
+                    <p>${q.explanation}</p>
+                </div>
+            `;
+            quizContainer.appendChild(questionDiv);
+        });
+
+        submitBtn.addEventListener('click', () => {
+            let score = 0;
+            quizData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                const optionLabels = document.querySelectorAll(`[data-qindex="${index}"] .option-label`);
+                
+                optionLabels.forEach(label => {
+                    label.classList.remove('correct', 'incorrect');
+                });
+                
+                if (selectedOption) {
+                    const selectedValue = parseInt(selectedOption.value);
+                    const parentLabel = selectedOption.parentElement;
+                    if (selectedValue === q.answer) {
+                        score++;
+                        parentLabel.classList.add('correct');
+                    } else {
+                        parentLabel.classList.add('incorrect');
+                        optionLabels[q.answer].classList.add('correct');
+                    }
+                } else {
+                    optionLabels[q.answer].classList.add('correct');
+                }
+                document.getElementById(`explanation-${index}`).style.display = 'block';
+            });
+
+            resultContainer.textContent = `結果: ${quizData.length}問中 ${score}問正解`;
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3章 3-10 半導体 - 第3回テスト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .option-label.correct { background-color: #d1fae5; }
+        .option-label.incorrect { background-color: #fee2e2; }
+        .explanation { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">3章 3-10 半導体</h1>
+            <h2 class="text-xl md:text-2xl text-green-600">第3回テスト (20問)</h2>
+        </header>
+
+        <div id="quiz-container" class="space-y-6">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <div class="mt-10 text-center">
+            <button id="submit-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg">採点する</button>
+            <div id="result" class="mt-6 text-2xl font-bold"></div>
+             <a href="index.html" class="inline-block mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">
+                トップに戻る
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "P形半導体の少数キャリアは何か。",
+                options: ["正孔", "自由電子", "陽イオン", "負イオン"],
+                answer: 1,
+                explanation: "P形半導体では多数キャリアが正孔であるのに対し、熱エネルギーなどによってわずかに生成される自由電子が少数キャリアとなります。"
+            },
+            {
+                question: "バイポーラトランジスタが遮断状態（カットオフ）にある時、どのような状態か。",
+                options: ["ベース電流が最大で、コレクタ電流も最大", "ベース電流が流れ、コレクタ電流も流れている", "ベース電流がほとんど流れず、コレクタ電流もほとんど流れない", "ベース電流に関係なくコレクタ電流が流れる"],
+                answer: 2,
+                explanation: "遮断状態（カットオフ）は、トランジスタのスイッチがオフの状態です。ベース-エミッタ間の電圧が低く、ベース電流が流れないため、コレクタ電流もほとんど流れません。"
+            },
+            {
+                question: "レーザー光を発生させる半導体素子は何か。",
+                options: ["発光ダイオード (LED)", "レーザーダイオード (LD)", "フォトダイオード", "ツェナーダイオード"],
+                answer: 1,
+                explanation: "レーザーダイオード（LD）は、LEDと同様に順方向電流で発光しますが、光を共振させて位相のそろった強力な光（レーザー光）を放射する点が異なります。"
+            },
+            {
+                question: "次のうち、ユニポーラトランジスタに分類されるものはどれか。",
+                options: ["NPNトランジスタ", "PNPトランジスタ", "IGBT", "MOSFET"],
+                answer: 3,
+                explanation: "MOSFET（電界効果トランジスタ）は、電流を運ぶキャリアが電子または正孔のどちらか一方であるため、ユニポーラトランジスタと呼ばれます。NPN、PNP、IGBTはバイポーラ（両方のキャリアを利用する）です。"
+            },
+            {
+                question: "ダイオードの記号で、矢印が向いている方向は何を示すか。",
+                options: ["電流が流れる方向", "電流が流れない方向", "電子が移動する方向", "電圧が高い方向"],
+                answer: 0,
+                explanation: "ダイオードの回路記号の三角形（矢印）の向きは、電流が流れる順方向（アノードからカソードへ）を示しています。"
+            },
+            {
+                question: "デプレッション形MOSFETで、ゲートに逆の極性の電圧（Nチャネルなら負電圧）をかけるとドレイン電流はどうなるか。",
+                options: ["増加する", "減少する", "変化しない", "発振する"],
+                answer: 1,
+                explanation: "デプレッション形MOSFETでは、ゲートに逆極性の電圧をかけるとチャネル内のキャリアが反発してチャネルが狭くなり、ドレイン電流は減少します。"
+            },
+            {
+                question: "光を電気信号に変換する素子を組み合わせたもので、デジタルカメラの心臓部として使われる半導体デバイスは何か。",
+                options: ["液晶ディスプレイ (LCD)", "DRAM", "CCDやCMOSイメージセンサ", "マイクロプロセッサ (CPU)"],
+                answer: 2,
+                explanation: "CCDやCMOSイメージセンサは、微小なフォトダイオードを多数配列したもので、レンズを通して入ってきた光を画素ごとの電気信号に変換し、画像を生成します。"
+            },
+            {
+                question: "半導体の製造工程で、シリコンの円盤を何と呼ぶか。",
+                options: ["チップ", "ダイ", "ウェハー", "マスク"],
+                answer: 2,
+                explanation: "半導体集積回路は、シリコンの単結晶インゴットを薄い円盤状にスライスした「ウェハー」の上に、多数まとめて作り込まれます。"
+            },
+            {
+                question: "次のうち、半導体の材料として使われないものはどれか。",
+                options: ["Si (シリコン)", "Ge (ゲルマニウム)", "GaAs (ガリウムヒ素)", "Cu (銅)"],
+                answer: 3,
+                explanation: "銅（Cu）は電気を非常によく通す導体であり、半導体ではなく配線材料として使われます。Si、Ge、GaAsは代表的な半導体材料です。"
+            },
+            {
+                question: "PN接合ダイオードに順方向電圧をかけた時、電流が流れ始める電圧を何と呼ぶか。",
+                options: ["降伏電圧", "ツェナー電圧", "スレッショルド電圧（しきい値電圧）", "飽和電圧"],
+                answer: 2,
+                explanation: "ダイオードに順方向電圧をかけていったときに、電流が急に流れ始める電圧のことをスレッショルド電圧（しきい値電圧）や順方向電圧降下と呼びます。"
+            },
+            {
+                question: "ガリウム(Ga)やインジウム(In)は何価の元素か。",
+                options: ["2価", "3価", "4価", "5価"],
+                answer: 1,
+                explanation: "ガリウム(Ga)やインジウム(In)は、最外殻電子が3つの3価の元素であり、P形半導体を形成するためのアクセプタとして用いられます。"
+            },
+            {
+                question: "トランジスタの発明により、それまで主流だった電子部品の何が置き換えられたか。",
+                options: ["抵抗", "コンデンサ", "真空管", "リレー"],
+                answer: 2,
+                explanation: "トランジスタは、それまで増幅やスイッチングに使われていた、大きくて消費電力が多く、寿命が短い真空管を置き換え、電子機器の小型化・高性能化に大きく貢献しました。"
+            },
+            {
+                question: "MOSFETの端子である「ソース」「ドレイン」「ゲート」は、バイポーラトランジスタのどの端子にそれぞれ相当するか。",
+                options: ["エミッタ、コレクタ、ベース", "コレクタ、エミッタ、ベース", "ベース、エミッタ、コレクタ", "エミッタ、ベース、コレクタ"],
+                answer: 0,
+                explanation: "機能的に見ると、キャリアの供給源であるソースはエミッタ、キャリアが出ていくドレインはコレクタ、制御するゲートはベースにそれぞれ相当します。"
+            },
+            {
+                question: "PN接合を2つ持つ半導体素子はどれか。",
+                options: ["ダイオード", "トランジスタ", "抵抗", "コンデンサ"],
+                answer: 1,
+                explanation: "バイポーラトランジスタは、NPNまたはPNPという構造を持ち、2つのPN接合を持っています。"
+            },
+            {
+                question: "電流を流すと、電子と正孔が再結合するエネルギーを利用して発光する素子はどれか。",
+                options: ["フォトダイオード", "太陽電池", "発光ダイオード (LED)", "ツェナーダイオード"],
+                answer: 2,
+                explanation: "発光ダイオード（LED）は、PN接合に順方向電流を流したときに起こる電子と正孔の再結合エネルギーを、光エネルギーに変換して放出する素子です。"
+            },
+            {
+                question: "不純物を加えることで、半導体の導電性がどうなるか。",
+                options: ["向上する", "低下する", "変化しない", "ゼロになる"],
+                answer: 0,
+                explanation: "不純物を加える（ドーピングする）と、移動可能なキャリア（自由電子または正孔）の数が増えるため、真性半導体に比べて導電性は劇的に向上します。"
+            },
+            {
+                question: "サイリスタ（SCR）は何個のPNPN接合を持っているか。",
+                options: ["1個", "2個", "3個", "4個"],
+                answer: 2,
+                explanation: "サイリスタはP-N-P-Nの4層構造を持っており、内部には3つのPN接合が存在します。一度オンするとゲート電流をなくしてもオン状態を維持するラッチ機能が特徴です。"
+            },
+            {
+                question: "半導体の分類で、単一の元素からなるものを単体半導体というのに対し、2種類以上の元素からなるものを何と呼ぶか。",
+                options: ["合金半導体", "混合物半導体", "化合物半導体", "有機半導体"],
+                answer: 2,
+                explanation: "ガリウムヒ素(GaAs)や窒化ガリウム(GaN)のように、2種類以上の元素が化学的に結合してできた半導体を化合物半導体と呼びます。"
+            },
+            {
+                question: "バイポーラトランジスタの増幅作用において、小さなベース電流で大きな何を制御するか。",
+                options: ["ベース電圧", "コレクタ電流", "エミッタ電圧", "コレクタ電圧"],
+                answer: 1,
+                explanation: "トランジスタの増幅作用は、入力である小さなベース電流の変化に応じて、出力である大きなコレクタ電流を比例的に変化させることで実現されます。"
+            },
+            {
+                question: "静電気放電(ESD)から電子回路を保護するために用いられるダイオードはどれか。",
+                options: ["可変容量ダイオード", "定電圧ダイオード（ツェナーダイオード）", "ガンダイオード", "PINダイオード"],
+                answer: 1,
+                explanation: "定電圧ダイオード（ツェナーダイオード）は、特定の電圧（ツェナー電圧）を超えると電流を流す性質があるため、回路に並列に接続することで、異常な高電圧をバイパスして後段の回路を保護するのに使われます。"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result');
+
+        quizData.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'bg-white p-5 rounded-lg shadow-sm';
+            questionDiv.innerHTML = `
+                <p class="text-md font-semibold mb-3">問題 ${index + 1}: ${q.question}</p>
+                <div class="options space-y-2" data-qindex="${index}">
+                    ${q.options.map((option, i) => `
+                        <label class="option-label block p-3 rounded-md border border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <input type="radio" name="q${index}" value="${i}" class="mr-3">
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+                <div id="explanation-${index}" class="explanation mt-3 p-3 rounded-md bg-blue-50 border-l-4 border-blue-400">
+                    <p>${q.explanation}</p>
+                </div>
+            `;
+            quizContainer.appendChild(questionDiv);
+        });
+
+        submitBtn.addEventListener('click', () => {
+            let score = 0;
+            quizData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                const optionLabels = document.querySelectorAll(`[data-qindex="${index}"] .option-label`);
+                
+                optionLabels.forEach(label => {
+                    label.classList.remove('correct', 'incorrect');
+                });
+                
+                if (selectedOption) {
+                    const selectedValue = parseInt(selectedOption.value);
+                    const parentLabel = selectedOption.parentElement;
+                    if (selectedValue === q.answer) {
+                        score++;
+                        parentLabel.classList.add('correct');
+                    } else {
+                        parentLabel.classList.add('incorrect');
+                        optionLabels[q.answer].classList.add('correct');
+                    }
+                } else {
+                    optionLabels[q.answer].classList.add('correct');
+                }
+                document.getElementById(`explanation-${index}`).style.display = 'block';
+            });
+
+            resultContainer.textContent = `結果: ${quizData.length}問中 ${score}問正解`;
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>

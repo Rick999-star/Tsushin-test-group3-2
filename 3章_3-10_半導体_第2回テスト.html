@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3章 3-10 半導体 - 第2回テスト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .option-label.correct { background-color: #d1fae5; }
+        .option-label.incorrect { background-color: #fee2e2; }
+        .explanation { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">3章 3-10 半導体</h1>
+            <h2 class="text-xl md:text-2xl text-green-600">第2回テスト (20問)</h2>
+        </header>
+
+        <div id="quiz-container" class="space-y-6">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <div class="mt-10 text-center">
+            <button id="submit-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg">採点する</button>
+            <div id="result" class="mt-6 text-2xl font-bold"></div>
+             <a href="index.html" class="inline-block mt-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">
+                トップに戻る
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "導体と絶縁体の中間の電気抵抗率を持つ物質を何と呼ぶか。",
+                options: ["超伝導体", "半導体", "誘電体", "抵抗体"],
+                answer: 1,
+                explanation: "半導体は、温度や不純物の添加によって電気抵抗率を大きく変えることができる、導体と絶縁体の中間的な性質を持つ物質です。"
+            },
+            {
+                question: "PNPトランジスタの記号で、エミッタの矢印の向きはどのようになっているか。",
+                options: ["ベースからエミッタへ向かう", "エミッタからベースへ向かう", "コレクタからベースへ向かう", "ベースからコレクタへ向かう"],
+                answer: 1,
+                explanation: "トランジスタの記号の矢印は、PN接合の順方向（P→N）を示します。PNPトランジスタではエミッタがP形、ベースがN形なので、矢印はエミッタからベースへ向かう向きになります。"
+            },
+            {
+                question: "エンハンスメント形MOSFETで、ゲートに電圧を印加した際にドレインとソースの間に形成される電流の通り道を何と呼ぶか。",
+                options: ["空乏層", "チャネル（反転層）", "接合部", "障壁層"],
+                answer: 1,
+                explanation: "エンハンスメント形MOSFETでは、ゲートにスレッショルド電圧以上の電圧をかけると、ゲート直下の半導体表面にキャリアが引き寄せられ、電流の通り道である「チャネル（反転層）」が形成されます。"
+            },
+            {
+                question: "ダイオードの順方向電圧降下は、シリコンダイオードの場合、一般的におよそ何ボルトか。",
+                options: ["0.1V", "0.3V", "0.7V", "1.5V"],
+                answer: 2,
+                explanation: "シリコンダイオードが導通し、電流が流れ始めるのに必要な順方向電圧は、一般的におよそ0.6〜0.7Vです。"
+            },
+            {
+                question: "金属と半導体を接合させて作られ、高速スイッチング用途に用いられるダイオードは何か。",
+                options: ["ツェナーダイオード", "ショットキーバリアダイオード", "可変容量ダイオード", "発光ダイオード"],
+                answer: 1,
+                explanation: "ショットキーバリアダイオードは金属と半導体の接合（ショットキ接合）を利用しており、順方向電圧降下が小さく、逆回復時間が非常に短いため高速なスイッチング動作が可能です。"
+            },
+            {
+                question: "意図的に半導体に不純物を添加するプロセスを何と呼ぶか。",
+                options: ["エッチング", "アニーリング", "ドーピング", "リソグラフィ"],
+                answer: 2,
+                explanation: "半導体の電気的特性を制御するために、微量の不純物元素を添加するプロセスをドーピングと言います。"
+            },
+            {
+                question: "PN接合ダイオードに逆方向電圧をかけると、電流はほとんど流れない。この状態を何というか。",
+                options: ["順バイアス", "逆バイアス", "飽和状態", "遮断状態"],
+                answer: 1,
+                explanation: "ダイオードのアノードに負、カソードに正の電圧をかけることを逆バイアス（逆方向電圧）といい、この状態では空乏層が広がり、電流はほとんど流れません。"
+            },
+            {
+                question: "NチャネルMOSFETをオンさせるためにゲート・ソース間に加えるべき電圧は何か。",
+                options: ["正の電圧", "負の電圧", "交流電圧", "電圧は不要"],
+                answer: 0,
+                explanation: "NチャネルMOSFETは、ゲートにソースに対して正の電圧をかけることで、P形基板の表面に電子が集まりN形のチャネルが形成され、ドレイン電流が流れるようになります。"
+            },
+            {
+                question: "複数のトランジスタやダイオード、抵抗などを一つのシリコン基板上に作り込んだ電子部品を何と呼ぶか。",
+                options: ["ディスクリート部品", "受動部品", "集積回路 (IC)", "ハイブリッドIC"],
+                answer: 2,
+                explanation: "集積回路（IC: Integrated Circuit）は、多数の半導体素子を一つの小さなチップ上に集めて作られた電子部品です。"
+            },
+            {
+                question: "半導体材料として最も広く利用されている元素は何か。",
+                options: ["ゲルマニウム (Ge)", "ガリウムヒ素 (GaAs)", "シリコン (Si)", "炭素 (C)"],
+                answer: 2,
+                explanation: "シリコンは地球上に豊富に存在し、安定した酸化膜（絶縁膜）を作りやすいなどの優れた特性から、半導体材料として最も広く使われています。"
+            },
+            {
+                question: "バイポーラトランジスタにおいて、ベース電流(Ib)とコレクタ電流(Ic)の関係を表す指標は何か。",
+                options: ["相互コンダクタンス (gm)", "直流電流増幅率 (hFE)", "オン抵抗 (Ron)", "スレッショルド電圧 (Vth)"],
+                answer: 1,
+                explanation: "直流電流増幅率（hFE）は、コレクタ電流(Ic)をベース電流(Ib)で割った値で、トランジスタがどれだけ電流を増幅できるかを示す重要な指標です。"
+            },
+            {
+                question: "PN接合に光を当てた際に、キャリアが発生して起電力が生じる効果を何というか。",
+                options: ["ゼーベック効果", "ペルチェ効果", "光起電力効果", "ホール効果"],
+                answer: 2,
+                explanation: "光起電力効果は、半導体に光を照射すると電子と正孔のペアが生成され、PN接合の内部電界によって分離されて起電力（電圧）が発生する現象です。太陽電池やフォトダイオードの動作原理です。"
+            },
+            {
+                question: "赤外線リモコンなどで、電気信号を光信号に変換して送信するために使われる素子は何か。",
+                options: ["フォトトランジスタ", "CCDイメージセンサ", "赤外線発光ダイオード (IRED)", "レーザーダイオード"],
+                answer: 2,
+                explanation: "赤外線発光ダイオード（IRED: Infrared Emitting Diode）は、順方向電流を流すことで目に見えない赤外線を放射するLEDの一種で、リモコンなどの光通信に利用されます。"
+            },
+            {
+                question: "IGBT (絶縁ゲートバイポーラトランジスタ) の特徴として正しいものはどれか。",
+                options: ["MOSFETとバイポーラトランジスタの長所を併せ持つ", "非常に高速なスイッチングが可能で、小電力用途に使われる", "電流駆動型の素子である", "主にマイクロ波の増幅に用いられる"],
+                answer: 0,
+                explanation: "IGBTは、入力部がMOSFET構造で電圧駆動が可能であり、出力部がバイポーラトランジスタ構造で大電流を流せるという、両者の利点を組み合わせたパワー半導体素子です。"
+            },
+            {
+                question: "半導体チップを外部の衝撃や湿気から保護し、回路基板に接続しやすくするための外装を何と呼ぶか。",
+                options: ["ウェハー", "ダイ", "パッケージ", "マスク"],
+                answer: 2,
+                explanation: "パッケージは、シリコンチップ（ダイ）を封入し、外部環境からの保護と、外部リード端子との電気的接続を提供する役割を担います。"
+            },
+            {
+                question: "次のうち、4価の元素ではないものはどれか。",
+                options: ["シリコン (Si)", "ゲルマニウム (Ge)", "炭素 (C)", "ホウ素 (B)"],
+                answer: 3,
+                explanation: "ホウ素（B）は最外殻電子が3つの3価の元素であり、P形半導体を作るためのアクセプタ不純物として用いられます。シリコン、ゲルマニウム、炭素は4価の元素です。"
+            },
+            {
+                question: "ダイオードを交流回路に用いた場合、どのような出力が得られるか。",
+                options: ["電圧が増幅された交流", "周波数が変化した交流", "プラスかマイナスの一方向のみの波形（脈流）", "完全に一定な直流"],
+                answer: 2,
+                explanation: "ダイオードの整流作用により、交流のプラス（またはマイナス）の半サイクルだけが通過し、もう一方は遮断されるため、一方向にのみ流れる波形（脈流）となります。"
+            },
+            {
+                question: "PチャネルMOSFETをオンさせるためにゲート・ソース間に加えるべき電圧は何か。",
+                options: ["正の電圧", "負の電圧", "交流電圧", "電圧は不要"],
+                answer: 1,
+                explanation: "PチャネルMOSFETは、ゲートにソースに対して負の電圧をかけることで、N形基板の表面に正孔が集まりP形のチャネルが形成され、ドレイン電流が流れるようになります。"
+            },
+            {
+                question: "キャリアがほとんど存在しない真性半導体層をP層とN層の間に挟んだ構造を持つダイオードは何か。",
+                options: ["PINダイオード", "ツェナーダイオード", "トンネルダイオード", "ガンダイオード"],
+                answer: 0,
+                explanation: "PINダイオードはP層とN層の間に真性（Intrinsic）半導体層を挟んだ構造で、高周波のスイッチや減衰器などに利用されます。"
+            },
+            {
+                question: "金属導体と半導体の電気抵抗の温度依存性の違いについて、正しい記述はどれか。",
+                options: ["どちらも温度が上がると抵抗は下がる", "どちらも温度が上がると抵抗は上がる", "金属は上がり、半導体は下がる", "金属は下がり、半導体は上がる"],
+                answer: 2,
+                explanation: "金属導体は温度が上がると原子の熱振動が激しくなり、電子の移動が妨げられるため抵抗が上がります。一方、半導体は温度が上がるとキャリアの数が増えるため抵抗が下がります。"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result');
+
+        quizData.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'bg-white p-5 rounded-lg shadow-sm';
+            questionDiv.innerHTML = `
+                <p class="text-md font-semibold mb-3">問題 ${index + 1}: ${q.question}</p>
+                <div class="options space-y-2" data-qindex="${index}">
+                    ${q.options.map((option, i) => `
+                        <label class="option-label block p-3 rounded-md border border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <input type="radio" name="q${index}" value="${i}" class="mr-3">
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+                <div id="explanation-${index}" class="explanation mt-3 p-3 rounded-md bg-blue-50 border-l-4 border-blue-400">
+                    <p>${q.explanation}</p>
+                </div>
+            `;
+            quizContainer.appendChild(questionDiv);
+        });
+
+        submitBtn.addEventListener('click', () => {
+            let score = 0;
+            quizData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                const optionLabels = document.querySelectorAll(`[data-qindex="${index}"] .option-label`);
+                
+                optionLabels.forEach(label => {
+                    label.classList.remove('correct', 'incorrect');
+                });
+                
+                if (selectedOption) {
+                    const selectedValue = parseInt(selectedOption.value);
+                    const parentLabel = selectedOption.parentElement;
+                    if (selectedValue === q.answer) {
+                        score++;
+                        parentLabel.classList.add('correct');
+                    } else {
+                        parentLabel.classList.add('incorrect');
+                        optionLabels[q.answer].classList.add('correct');
+                    }
+                } else {
+                    optionLabels[q.answer].classList.add('correct');
+                }
+                document.getElementById(`explanation-${index}`).style.display = 'block';
+            });
+
+            resultContainer.textContent = `結果: ${quizData.length}問中 ${score}問正解`;
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>

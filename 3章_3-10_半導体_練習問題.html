@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3章 3-10 半導体 - 練習問題</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .correct-answer { background-color: #e0f2fe; border-left: 4px solid #3b82f6; }
+        .incorrect-answer { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .explanation { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">3章 3-10 半導体</h1>
+            <h2 class="text-xl md:text-2xl text-blue-600">練習問題</h2>
+        </header>
+
+        <div id="quiz-container" class="space-y-8">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <div class="mt-8 text-center">
+             <a href="index.html" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">
+                トップに戻る
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const practiceQuestions = [
+            {
+                question: "半導体及び半導体素子についての記述のうち、正しいものを一つ選べ。",
+                options: [
+                    "不純物を含まないSi(シリコン)、Ge(ゲルマニウム) 等の単結晶半導体を真性半導体という。",
+                    "PN接合ダイオードは、電流がN形半導体からP形半導体へ一方向に流れる整流特性を持つ。",
+                    "P形半導体の多数キャリアは、電子である。",
+                    "ホトダイオードは、電気信号を光信号に変換する特性を利用するものである。"
+                ],
+                answer: 0,
+                explanation: "① 正解です。真性半導体は、不純物を一切含まない純粋な半導体です。② PN接合ダイオードは、P形からN形へ電流が流れます。③ P形半導体の多数キャリアは正孔（ホール）です。④ ホトダイオードは光信号を電気信号に変換します。"
+            },
+            {
+                question: "シリコン(Si)等の真性半導体にアンチモン(Sb)等の5価の物質を不純物として導入した半導体と、その不純物の名称の正しい組み合わせを一つ選べ。",
+                options: [
+                    "N形半導体、ドナー",
+                    "N形半導体、アクセプタ",
+                    "P形半導体、ドナー",
+                    "P形半導体、アクセプタ"
+                ],
+                answer: 0,
+                explanation: "真性半導体に5価の不純物を加えると、余った電子が自由電子となり、電流を流しやすくなります。このように自由電子を多く含む半導体をN型半導体といい、電子を「与える」という意味で5価の不純物をドナーといいます。"
+            },
+            {
+                question: "半導体に関する記述として、適当でないものを一つ選べ。",
+                options: [
+                    "半導体は、常温で導体と絶縁体の中間の抵抗率を持っている物質である。",
+                    "n形半導体では、自由電子が多く正孔が少ない。",
+                    "pn 接合面では、キャリアがほとんど存在しない空乏層ができる。",
+                    "半導体の抵抗率は、温度が上昇すると増加する。"
+                ],
+                answer: 3,
+                explanation: "半導体の抵抗率は、温度が上昇するとキャリア（電子と正孔）が増加するため、逆に低下します。金属導体は温度が上昇すると抵抗率が増加します。"
+            },
+            {
+                question: "ダイオードに関する記述として、適当でないものを一つ選べ。",
+                options: [
+                    "発光ダイオードは、逆方向電圧を加えると発光する。",
+                    "ホトダイオードは、pn接合部に光を当てると光の強さに応じた電流を取り出すことができる。",
+                    "定電圧ダイオードは、加える逆方向電圧がある値を超えると急激に電流が流れ出す降伏現象を生じる。",
+                    "可変容量ダイオードは、加える逆方向電圧の大きさが変化すると、静電容量の大きさも変化する。"
+                ],
+                answer: 0,
+                explanation: "発光ダイオード（LED）は、順方向電圧を加えたときに、電子と正孔が再結合するエネルギーによって発光します。逆方向電圧では発光しません。"
+            },
+            {
+                question: "NPNトランジスタ回路の動作に関する記述として、適当でないものを一つ選べ。",
+                options: [
+                    "図(a)の回路は、C-B間に逆電圧が加わるためC-B接合面付近の空乏層が広くなる。",
+                    "図(a)の回路は、コレクタに電流が流れない。",
+                    "図(b)の回路は、B-E間に順電圧が加わるためB-E接合面付近の空乏層が狭くなる。",
+                    "図(b)の回路は、コレクタに電流が流れない。"
+                ],
+                answer: 3,
+                explanation: "(b)の回路では、ベース-エミッタ(B-E)間に順方向電圧VBEが加えられています。これによりベース電流が流れ、それが引き金となってコレクタ-エミッタ(C-E)間にもコレクタ電流が流れます。したがって、「コレクタに電流が流れない」という記述は誤りです。"
+            },
+            {
+                question: "エンハンスメント形MOS-FETに関する記述として、適当でないものを一つ選べ。",
+                options: [
+                    "ゲートに電圧を加えなくてもドレーン電流が流れる。",
+                    "ゲート電圧を大きくするとドレーン電流が増加する。",
+                    "ゲートにかける電圧が正の領域で動作する（Nチャネルの場合）。",
+                    "ゲート電圧を加えるとゲート直下に反転層（チャネル）が形成される。"
+                ],
+                answer: 0,
+                explanation: "エンハンスメント形MOS-FETは、ゲート電圧が0V（スレッショルド電圧以下）のときは、ドレーン・ソース間にチャネルが形成されておらず、ドレーン電流は流れません。ゲートに一定以上の電圧（スレッショルド電圧）をかけることでチャネルが形成され、電流が流れるようになります。"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+
+        practiceQuestions.forEach((q, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-block bg-white p-6 rounded-lg shadow-md';
+            questionDiv.innerHTML = `
+                <p class="text-lg font-semibold mb-4">問題 ${index + 1}: ${q.question}</p>
+                <div class="options space-y-2">
+                    ${q.options.map((option, i) => `
+                        <label class="block p-3 rounded-lg border border-gray-200 hover:bg-gray-100 cursor-pointer">
+                            <input type="radio" name="q${index}" value="${i}" class="mr-3">
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+                <button onclick="checkAnswer(${index}, this)" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">答えを確認</button>
+                <div id="result-${index}" class="mt-3 font-semibold text-lg"></div>
+                <div id="explanation-${index}" class="explanation mt-4 p-4 rounded-lg bg-gray-100 border-l-4 border-gray-400">
+                    <h4 class="font-bold">解説</h4>
+                    <p>${q.explanation}</p>
+                </div>
+            `;
+            quizContainer.appendChild(questionDiv);
+        });
+
+        function checkAnswer(questionIndex, button) {
+            const q = practiceQuestions[questionIndex];
+            const selectedOption = document.querySelector(`input[name="q${questionIndex}"]:checked`);
+            const resultDiv = document.getElementById(`result-${questionIndex}`);
+
+            if (selectedOption) {
+                const selectedValue = parseInt(selectedOption.value);
+                const radioInputs = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+                
+                // Disable button and radio inputs
+                button.disabled = true;
+                button.classList.add('bg-gray-400', 'hover:bg-gray-400');
+                radioInputs.forEach(input => {
+                    input.disabled = true;
+                    const parentLabel = input.parentElement;
+                    parentLabel.classList.add('cursor-not-allowed');
+                    parentLabel.classList.remove('hover:bg-gray-100');
+                });
+
+                const correctLabel = radioInputs[q.answer].parentElement;
+
+                if (selectedValue === q.answer) {
+                    correctLabel.classList.add('correct-answer');
+                    resultDiv.innerHTML = `<span class="text-green-600">正解です！</span>`;
+                } else {
+                    const selectedLabel = selectedOption.parentElement;
+                    selectedLabel.classList.add('incorrect-answer');
+                    correctLabel.classList.add('correct-answer');
+                    resultDiv.innerHTML = `<span class="text-red-600">不正解です。</span>`;
+                }
+                
+                document.getElementById(`explanation-${questionIndex}`).style.display = 'block';
+            } else {
+                resultDiv.innerHTML = `<span class="text-amber-600">選択肢を選んでください。</span>`;
+                setTimeout(() => {
+                    if(resultDiv.innerHTML.includes('選択肢を選んでください')) {
+                        resultDiv.innerHTML = '';
+                    }
+                }, 2500);
+            }
+        }
+    </script>
+</body>
+</html>
+
